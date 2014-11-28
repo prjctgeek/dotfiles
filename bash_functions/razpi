@@ -1,0 +1,5 @@
+#rasberry pi specific aliases
+if [ `uname -m` == "armv6l" ]; then
+    alias vnc="vncserver :1 -geometry 1280x800 -depth 16 -pixelformat rgb565"
+    alias vncstop="pkill Xtightvnc"
+fi

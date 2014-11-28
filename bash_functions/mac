@@ -1,0 +1,117 @@
+if [ `uname` == "Darwin" ]; then
+    #echo "Loading mac specific bash bits"
+    export PATH=/opt/local/bin:$PATH:/usr/local/git/bin:/usr/local/bin:/opt/local/bin/psql93
+    export GIT_SSH=`which ssh`
+    export EDITOR=vim
+
+    which -s git 2>&1>& /dev/null
+    if [ $? -eq "0" ]; then
+    	git_ps1
+    fi
+
+    if [ -f /opt/local/etc/bash_completion ]; then
+        . /opt/local/etc/bash_completion
+    fi
+
+    #OSX nice to haves
+    alias flushdns='dscacheutil -flushcache'
+    alias ls='ls -G'
+    alias ll='ls -lG'
+    alias synergy='synergys --config ~/.synergy.conf'
+    alias pgrep='ps aux|grep '
+
+    #===sublime text
+    if [ -e "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl" ]; then
+        export PATH=$PATH:"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
+    fi
+
+    #===ruby on osx with darwin ports
+    alias gem='sudo /opt/local/libexec/ruby1.8/gem'
+
+    #===services
+    alias dhcpdstart='sudo launchctl load -w /Library/LaunchDaemons/org.macports.dhcpd.plist'
+    alias tftpdstart='sudo tftpd -L -s /tftpboot &'
+    alias chkconfig_httpd_on="sudo launchctl load -w /Library/LaunchDaemons/org.macports.apache2.plist"
+    alias chkconfig_httpd_off="sudo launchctl unload -w /Library/LaunchDaemons/org.macports.apache2.plist"
+    alias port="sudo port"
+    alias chkconfig_pgsql_on="sudo port load postgresql91-server"
+    alias timemachine_delay="sudo defaults write /System/Library/LaunchDaemons/com.apple.backupd-auto StartInterval -int 14400"
+
+    #ipv6 tunnel
+    alias ip6tun='sudo /opt/local/gogc/bin/gogoc  -f /opt/local/gogc/bin/gogoc.conf'
+
+    #chrome with speed tracer
+    alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --enable-extension-timeline-api &"
+
+    #====websites
+    function pgsql_createdb() {
+        sudo mkdir -p "/opt/local/var/db/postgresql91/$1"
+        sudo chown postgres:postgres "/opt/local/var/db/postgresql91/$1"
+        sudo -u postgres /opt/local/lib/postgresql91/bin/initdb -D /opt/local/var/db/postgresql91/$1
+    }
+
+    function mDNS_restart() {
+	echo "You must have edited /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist for this to do any good"
+	echo -n "\n\nadd this to line 16:\n"
+	echo -n "<string>-AlwaysAppendSearchDomains</string>\n"
+	echo -n "See http://www.eigenspace.org/2011/07/fixing-osx-lion-dns-search-domains/ \n for more details."
+	sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+	sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+    }
+    function adtweaks() {
+        sudo dsconfigad -useuncpath disable
+    }
+
+    function osx_systemtweaks() {
+        echo "turning on show all files"
+        defaults write com.apple.Finder AppleShowAllFiles YES
+        if [ ! -d ~/Pictures/Screeshots ]; then
+          mkdir ~/Pictures/Screeshots
+          ln -s ~/Pictures/Screenshots ~/Desktop/Screenshots
+        fi
+        echo "Pointing screenshot creation to ~/Pictures/Screenshots"
+        defaults write com.apple.screencapture location ~/Pictures/Screenshots
+        killall SystemUIServer
+    }
+    function osx_keyboardtweaks() {
+        #borrowed from https://github.com/mathiasbynens/dotfiles/blob/master/.osx
+        # Disable press-and-hold for keys in favor of key repeat
+        defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+        # Disable the “Are you sure you want to open this application?” dialog
+        defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+        # Show all filename extensions in Finder
+        defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+        # Set a blazingly fast keyboard repeat rate
+        defaults write NSGlobalDomain KeyRepeat -int 0
+
+        # Display full POSIX path as Finder window title
+        defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+        # Avoid creating .DS_Store files on network volumes
+        defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+        # Disable the warning before emptying the Trash
+        defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+        # Require password immediately after sleep or screen saver begins
+        defaults write com.apple.screensaver askForPassword -int 1
+        defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+        #create a Screenshots directory and use it by default
+        mkdir ~/Screenshots
+        defaults write com.apple.screencapture location /Users/dchapman/Screenshots
+        killall SystemUIServer
+
+        echo "turning on show all files"
+        defaults write com.apple.Finder AppleShowAllFiles YES
+    }
+    function resetsound() {
+      sudo pkill coreaudi[o]
+}
+
+fi
+
+

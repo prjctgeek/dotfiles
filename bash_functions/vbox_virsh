@@ -1,0 +1,22 @@
+#map VBoxManage commands to virsh
+
+if [ `uname -s` == "Darwin" ]; then
+    virsh() { 
+        case "$1" in
+            list)
+                VBoxManage list vms 
+            ;;
+            start)
+                VBoxManage startvm $2
+            ;;
+            shutdown)
+                VBoxManage controlvm $2 poweroff
+            ;;
+            destroy)
+                VBoxManage controlvm $2 acpipowerbutton
+            ;;
+            *)
+            ;;
+        esac
+    }
+fi

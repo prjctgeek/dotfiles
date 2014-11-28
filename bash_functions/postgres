@@ -1,0 +1,5 @@
+#postgresql installed from postgresqlapp.com
+
+if [ -x /Applications/Postgres.app/Contents/Versions/9.3/bin/psql ]; then
+  export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.3/bin
+fi

@@ -1,0 +1,4 @@
+
+if [ `uname -s` == "Darwin" ]; then
+  alias find="/opt/local/bin/gfind"
+fi

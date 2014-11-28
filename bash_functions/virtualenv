@@ -1,0 +1,7 @@
+export WORKON_HOME=~/.virtualenvs
+export VIRTENVBIN=`which virtualenvwrapper.sh`
+
+if [ -x "$VIRTENVBIN" ]; then
+  source `which virtualenvwrapper.sh`
+fi
+

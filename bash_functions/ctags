@@ -1,0 +1,4 @@
+function updatetags() {
+        find ~/gitrepos -type f -name \*pp -exec ctags -a -f ~/tags \{\} \;
+}
+

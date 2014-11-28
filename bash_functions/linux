@@ -1,0 +1,19 @@
+if [ `uname` == "Linux" ]; then
+    export PATH=$PATH:/sbin
+
+    #ssh-agent env bits for screen
+    export SSH_AGENT_PID=`pidof -s ssh-agent`
+    let SSH_AGENT_PID=SSH_AGENT_PID-1
+    #echo "using $SSH_AGENT_PID"
+    SSH_AUTH_SOCK=`find /tmp -user "$USER" -type s -name agent.$SSH_AGENT_PID 2>/dev/null`
+    export SSH_AUTH_SOCK
+
+    check_krb
+    git_ps1
+
+    export EDITOR=`which vim`
+    alias service="sudo service"
+    alias yum="sudo yum"
+    alias apt-get="sudo apt-get"
+    alias tail="sudo tail"
+fi

@@ -1,0 +1,36 @@
+/usr/bin/env git 2>&1>& /dev/null
+if [ $? -eq "1" ]; then
+
+ if [ -f "/opt/local/etc/bash_completion.d/git" ]; then
+   source /opt/local/etc/bash_completion.d/git
+ else
+   source ~/.bash_functions/git-bash_completion
+ fi
+
+git_ps1() {
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_SHOWUNTRACKEDFILES=1
+    export GIT_PS1_SHOWSTASHSTATE=1
+    export dice=$'\xf0\x9f\x8e\xb2'
+    if [ __git_ps1 ]; then
+      export PROMPT='\[\033[0;32m\][\u@\h \[\033[01;34m\]\W\[\033[0;32m\]]\[\033[0;37m\]$(__git_ps1 " (%s)")                                       \[\033[1;37m\]$(date "+%H:%M:%S%Z")   $(TZ=UTC date "+%H:%M:%S%Z")\[\033[0m\]\n $(echo $dice)  '
+    else
+      export PROMPT='\[\033[0;32m\][\u@\h \[\033[01;34m\]\W\[\033[0;32m\]]\[\033[0;37m\]\[\033[0;31m\]\n\\$\[\033[0m\] '
+    fi
+    export PROMPT_COMMAND='PS1="${PROMPT}"; history -a'
+    export HOSTFILE=~/.HOSTFILE
+    complete -A hostname ssh
+    complete -A hostname 'screen ssh'
+}
+
+  alias gpa='GIT_CURRENT=`git branch | grep \* | awk '\''{print $2}'\''`; for x in `git branch`; do echo -n $x; git checkout $x && git pull; done; git checkout $GIT_CURRENT'
+else
+  echo "empty git_ps1 definition"
+	function git_ps1() {
+		return 0;
+	}
+fi
+
+#function git_syncheck() {
+#    find modules manifests -name '*.pp'   | xargs -n1 -P5 sh -c 'puppet parser validate "$@" || exit 255' -
+#}

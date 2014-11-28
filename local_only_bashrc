@@ -1,0 +1,7 @@
+#local additions we don't want on github
+if [ -d ~/.bash_local ]  && [ -z $localrcread  ]; then
+  export localrcread=1
+  for i in  $(ls ~/.bash_local/*); do
+         source "$i";
+   done
+fi

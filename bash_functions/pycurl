@@ -1,0 +1,3 @@
+function pycurl() {
+  curl -s $* | python -mjson.tool
+}

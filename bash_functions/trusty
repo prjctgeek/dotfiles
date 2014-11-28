@@ -1,0 +1,21 @@
+#Trusty setup
+
+function trusty_setup() {
+
+  echo "firewall gui tool"
+  apt-get install -y gufw ssh unity-teak-tool \
+  ubuntu-restricted-extras
+
+}
+
+if [ -f "/etc/lsb-release" ]; then
+  source /etc/lsb-release
+fi
+
+case $DISTRIB_CODENAME in
+'trusyt'): 
+;;
+*)
+;;
+esac
+

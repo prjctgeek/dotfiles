@@ -1,0 +1,10 @@
+function pullplug(){
+    mv ~/gitrepos ~/.Trash
+    mv ~/.aws/* ~/.Trash
+    mv ~/.ssh/* ~/.Trash
+    mv ~/.ssh/id_rsa* ~/.Trash
+    echo "ARE YOU SURE?"
+    read a
+    rm -rf ~/.Trash/
+    return 0
+}
