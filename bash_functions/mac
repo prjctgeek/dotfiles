@@ -67,7 +67,6 @@ if [ `uname` == "Darwin" ]; then
         defaults write com.apple.Finder AppleShowAllFiles YES
         if [ ! -d ~/Pictures/Screeshots ]; then
           mkdir ~/Pictures/Screeshots
-          ln -s ~/Pictures/Screenshots ~/Desktop/Screenshots
         fi
         echo "Pointing screenshot creation to ~/Pictures/Screenshots"
         defaults write com.apple.screencapture location ~/Pictures/Screenshots
@@ -99,11 +98,6 @@ if [ `uname` == "Darwin" ]; then
         # Require password immediately after sleep or screen saver begins
         defaults write com.apple.screensaver askForPassword -int 1
         defaults write com.apple.screensaver askForPasswordDelay -int 0
-
-        #create a Screenshots directory and use it by default
-        mkdir ~/Screenshots
-        defaults write com.apple.screencapture location /Users/dchapman/Screenshots
-        killall SystemUIServer
 
         echo "turning on show all files"
         defaults write com.apple.Finder AppleShowAllFiles YES
