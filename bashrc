@@ -1,11 +1,14 @@
 #.bashrc
+#echo "in .bashrc"
 
 #Use the git repo for most things...
-if [ -d ~/.bash_functions ]  && [ -z $rcread ]; then
+if [ -h ~/.bash_functions ];  then
+  #echo "in ~/.bash_functions/*"
   export rcread=1
   #Use the git repo for most things...
   for i in  $(ls ~/.bash_functions/*); do
-         source "$i";
+	 #echo "Running: source $i"
+         source $i;
    done
 fi
 
