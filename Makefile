@@ -9,7 +9,6 @@ all: $(homedir)/.bash_profile $(homedir)/.tmux.conf $(homedir)/.bash_functions
 
 #bash
 $(homedir)/.bash_profile:
-	#Oh OSX, sigh.
 	cp $(PWD)/bash_profile $(homedir)/.bash_profile
 
 $(homedir)/.bash_local:
